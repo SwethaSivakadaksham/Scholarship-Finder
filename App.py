@@ -95,7 +95,6 @@ if selected == "Home":
         marks = st.slider("Enter your marks in the last final examination", min_value=0, max_value=100, value=30, step=1)
         gender = st.selectbox("Enter your gender:", ["Male", "Female"])
         nationality = st.radio("Do you want to include International Scholarships?", ["Yes", "No"])
-        education_level = st.radio("Are you applying for UG or PG?", ["UG", "PG"], index=0)  # Added UG/PG radio button
 
         # Submit Button
         submit_button = st.form_submit_button("Submit")
@@ -105,35 +104,45 @@ if selected == "Home":
             st.markdown(html_temp2.format(name), unsafe_allow_html=True)
             st.info(f"Your annual income in words: {income_words}")
         
-            # Data Filtering based on UG/PG
-            if education_level == "UG":
-                st.info("You are applying for Undergraduate scholarships.")
-                # Filter data for UG scholarships
-                # Filter logic based on the "UG" criteria can be added here
-                
+            # Data Filtering
+            if gender == "Female":
+                if nationality == "Yes":
+                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
+                else:
+                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                    (data["Country"] == "India")]
             else:
-                st.info("You are applying for Postgraduate scholarships.")
-                # Filter data for PG scholarships
-                # Filter logic based on the "PG" criteria can be added here
-                
-            # Continue with the rest of the scholarship filtering logic based on other inputs like gender, income, etc.
+                if nationality == "Yes":
+                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                    (data["Gender"] == "No")]
+                else:
+                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                    (data["Gender"] == "No") & (data["Country"] == "India")]
             
-            # Example: Display filtered scholarships (assuming the filtering is done)
-            st.subheader("Available Scholarships")
-            # Example scholarships (replace with real filtered data)
-            scholarships = [
-                {"name": "Example UG Scholarship", "amount": "50,000 INR", "link": "http://example.com", "funded_by": "Government"},
-                {"name": "Example PG Scholarship", "amount": "100,000 INR", "link": "http://example.com", "funded_by": "Private"}
-            ]
+            mask_new = mask[["Scholarship Name", "Amount Provided", "Link", "Funded By"]]
+            rows = mask_new.shape[0]
             
-            for scholarship in scholarships:
-        with st.expander(scholarship["name"]):  # Changed beta_expander to expander
-        st.markdown(f"**Amount Provided:** {scholarship['amount']}")
-        st.markdown(f"**Funded By:** {scholarship['funded_by']}")
-        st.markdown(f"[Click here to apply]({scholarship['link']})")
+            if rows > 0:
+                # Display the scholarships as black and white boxes
+                st.subheader("Available Scholarships")
+                for i in range(rows):
+                    with st.beta_expander(mask_new.iloc[i, 0]):
+                        st.markdown(f"**Amount Provided:** {mask_new.iloc[i, 1]} INR")
+                        st.markdown(f"**Funded By:** {mask_new.iloc[i, 3]}")
+                        st.markdown(f"[Click here to apply]({mask_new.iloc[i, 2]})")
+            else:
+                st.warning("No scholarships found based on your input!")
         else:
             st.info("Please enter your name!")
-            
+
 # Government Funded Scholarships Section
 if selected == "Government Funded Scholarships":
     st.markdown(html_temp5, unsafe_allow_html=True)
@@ -173,11 +182,4 @@ if selected == "Scholarships for Women":
 # International Scholarships Section
 if selected == "International Scholarships":
     st.markdown(html_temp8, unsafe_allow_html=True)
-    international_funded = data[data["Country"] != "India"]
-    international_funded = international_funded[["Scholarship Name", "Amount Provided", "Link"]]
-    
-    st.subheader("International Scholarships")
-    for i in range(international_funded.shape[0]):
-        with st.beta_expander(international_funded.iloc[i, 0]):
-            st.markdown(f"**Amount Provided:** {international_funded.iloc[i, 1]} INR")
-            st.markdown(f"[Click here to apply]({international_funded.iloc[i, 2]})")
+    international_f
