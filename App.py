@@ -99,80 +99,94 @@ html_temp10 = """
 if selected == "Home":
     st.markdown(html_temp, unsafe_allow_html=True)
     
-    # User Input Form (Collapsible for better layout)
-    with st.form(key="user_input_form", clear_on_submit=True):
-        name = st.text_input("Enter your Name", placeholder="Name", label_visibility="collapsed")
+    # User input section
+    name = st.text_input("Enter your Name", placeholder="Name", label_visibility="collapsed")
+    if name:
+        st.markdown(html_temp2.format(name), unsafe_allow_html=True)
+        
+        # User filters
         minority = st.radio("Are you in Minorities(SC/ST) category?", ["Yes", "No"], index=1)
         disability = st.radio("Do you have any disability?", ["Yes", "No"], index=1)
         sports_person = st.radio("Do you play professional sports?", ["Yes", "No"], index=1)
         armed_forces = st.radio("Are any of your relatives in Armed Forces?", ["Yes", "No"], index=1)
         annual_income = st.number_input("Enter your family's annual income (in INR)", max_value=1100000, step=1000)
         income_words = num2words(annual_income)
+        st.info(f"Your annual income in words: {income_words}")
+        
+        if annual_income >= 1100000:
+            st.error("Annual Income should be less than 10 Lakh Rupees")
+        
         marks = st.slider("Enter your marks in the last final examination", min_value=0, max_value=100, value=30, step=1)
         gender = st.selectbox("Enter your gender:", ["Male", "Female"])
         nationality = st.radio("Do you want to include International Scholarships?", ["Yes", "No"])
-
-        # Submit Button
-        submit_button = st.form_submit_button("Submit")
-    
-    if submit_button:
-        if name:
-            st.markdown(html_temp2.format(name), unsafe_allow_html=True)
-            st.info(f"Your annual income in words: {income_words}")
         
-            # Data Filtering
-            if gender == "Female":
-                if nationality == "Yes":
-                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
-                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
-                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
-                else:
-                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
-                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
-                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
-                                    (data["Country"] == "India")]
+        # Data Filtering
+        if gender == "Female":
+            if nationality == "Yes":
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
             else:
-                if nationality == "Yes":
-                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
-                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
-                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
-                                    (data["Gender"] == "No")]
-                else:
-                    mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
-                                    (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
-                                    (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
-                                    (data["Gender"] == "No") & (data["Country"] == "India")]
-            
-            mask_new = mask[["Scholarship Name", "Amount Provided", "Link", "Funded By"]]
-            rows = mask_new.shape[0]
-            
-            if rows > 0:
-                # Display the scholarships as cards
-                st.subheader("Available Scholarships")
-                for i in range(rows):
-                    with st.beta_expander(mask_new.iloc[i, 0]):
-                        st.markdown(f"**Amount Provided:** {mask_new.iloc[i, 1]} INR")
-                        st.markdown(f"**Funded By:** {mask_new.iloc[i, 3]}")
-                        st.markdown(f"[Click here to apply]({mask_new.iloc[i, 2]})")
-            else:
-                st.warning("No scholarships found based on your input!")
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Country"] == "India")]
         else:
-            st.info("Please enter your name!")
+            if nationality == "Yes":
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Gender"] == "No")]
+            else:
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Gender"] == "No") & (data["Country"] == "India")]
+        
+        mask_new = mask[["Scholarship Name", "Amount Provided", "Link", "Funded By"]]
+        rows = mask_new.shape[0]
+        
+        a = []
+        for i in range(rows):
+            a.append(f"{mask_new.iloc[i, 0]} : {mask_new.iloc[i, 1]} INR")
+            a.append(f"{mask_new.iloc[i, 2]}")
+            a.append("-------------------------------------------")
+        
+        if st.button("Submit"):
+            for i in range(len(a)):
+                if i % 3 == 0:
+                    st.markdown(html_temp3.format(a[i]), unsafe_allow_html=True)
+                else:
+                    st.markdown(html_temp4.format(a[i]), unsafe_allow_html=True)
+    else:
+        st.info("Please enter your name!")
 
 # Government Funded Scholarships Section
 if selected == "Government Funded Scholarships":
     st.markdown(html_temp5, unsafe_allow_html=True)
     govt_funded = data[data["Funded By"] == "Government"]
     govt_funded = govt_funded[["Scholarship Name", "Amount Provided", "Link"]]
-    
-    st.subheader("Government Funded Scholarships")
-    for i in range(govt_funded.shape[0]):
-        with st.beta_expander(govt_funded.iloc[i, 0]):
-            st.markdown(f"**Amount Provided:** {govt_funded.iloc[i, 1]} INR")
-            st.markdown(f"[Click here to apply]({govt_funded.iloc[i, 2]})")
+    st.table(govt_funded)
 
 # Private Funded Scholarships Section
 if selected == "Private Funded Scholarships":
     st.markdown(html_temp6, unsafe_allow_html=True)
     prvt_funded = data[data["Funded By"] == "Private"]
-    prvt_funded = prvt_funded[
+    prvt_funded = prvt_funded[["Scholarship Name", "Amount Provided", "Link"]]
+    st.table(prvt_funded)
+
+# Scholarships for Women Section
+if selected == "Scholarship for Women":
+    st.markdown(html_temp7, unsafe_allow_html=True)
+    women_funded = data[data["Gender"] == "Yes"]
+    women_funded = women_funded[["Scholarship Name", "Amount Provided", "Link"]]
+    st.table(women_funded)
+
+# International Scholarships Section
+if selected == "International Scholarships":
+    st.markdown(html_temp8, unsafe_allow_html=True)
+    international_funded = data[data["Country"] != "India"]
+    international_funded = international_funded[["Scholarship Name", "Amount Provided", "Link"]]
+    st.table(international_funded)
+    st.markdown(html_temp9, unsafe_allow_html=True)
+    st.markdown(html_temp10, unsafe_allow_html=True)
