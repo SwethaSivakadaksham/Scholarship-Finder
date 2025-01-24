@@ -126,14 +126,11 @@ if selected == "Home":
                 {"name": "Example PG Scholarship", "amount": "100,000 INR", "link": "http://example.com", "funded_by": "Private"}
             ]
             
-            # Correcting beta_expander to expander
-
-for scholarship in scholarships:
-    with st.expander(scholarship["name"]):  # Changed beta_expander to expander
-        st.markdown(f"**Amount Provided:** {scholarship['amount']}")
-        st.markdown(f"**Funded By:** {scholarship['funded_by']}")
-        st.markdown(f"[Click here to apply]({scholarship['link']})")
-
+            for scholarship in scholarships:
+                with st.beta_expander(scholarship["name"]):
+                    st.markdown(f"**Amount Provided:** {scholarship['amount']}")
+                    st.markdown(f"**Funded By:** {scholarship['funded_by']}")
+                    st.markdown(f"[Click here to apply]({scholarship['link']})")
         else:
             st.info("Please enter your name!")
             
