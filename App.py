@@ -11,184 +11,182 @@ from num2words import num2words
 
 data = pd.read_csv("Scholarshipsnew.csv")
 
-
-
-# st.sidebar.header("Navigation")
-# navigation = st.sidebar.radio("Navigation",["Home","About Us","List of Government Funded Scholarships","List of Private Funded Scholarships","Specially for Women Scholarships"], label_visibility="hidden")
-
+# Sidebar navigation
 with st.sidebar:
     selected = option_menu(
         menu_title="Navigation",
-        options=["Home","Government Funded Scholarships","Private Funded Scholarships","Scholarship for Women","International Scholarships"],
-        icons=["house","compass","envelope","geo","gender-female","mortarboard-fill"],
+        options=["Home", "Government Funded Scholarships", "Private Funded Scholarships", "Scholarship for Women", "International Scholarships"],
+        icons=["house", "bank", "hand-thumbs-up", "gender-female", "globe"],
         default_index=0,
-        menu_icon="cast", 
-        orientation="horizontal"
+        menu_icon="cast",
+        orientation="vertical"
     )
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-# styling of the website
+# Styling of the website
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 html_temp = """
-<div style = background-color:black;padding:5px>
-<h1 style="color:white;text-align:Center">Scholarships Finder</h1>
+<div style="background-color:#0d6efd; padding:10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h1 style="color:white;text-align:center;">Scholarships Finder</h1>
 </div>
-<br>   
 """
 
 html_temp2 = """
 <div>
-<h5 style="color:black;text-align:Left;font-size:20px">Hello , {} !</h5>
+    <h5 style="color:black;text-align:left;font-size:18px">Hello, {}! Welcome to your personalized Scholarship Finder.</h5>
 </div>
 """
 
 html_temp3 = """
 <div>
-<h5 style="color:black;text-align:Left;font-size:24px">{}</h5>
+    <h5 style="color:#0d6efd;text-align:left;font-size:18px">{}</h5>
 </div>
 """
 
 html_temp4 = """
 <div>
-<h5 style="color:gray;text-align:Left;font-size:16px">{}</h5>
+    <h5 style="color:gray;text-align:left;font-size:16px">{}</h5>
 </div>
 """
 
 html_temp5 = """
-<div style = background-color:black;padding:5px>
-<h1 style="color:white;text-align:Center">Government Funded Scholarships</h1>
+<div style="background-color:#0d6efd; padding:10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h1 style="color:white;text-align:center;">Government Funded Scholarships</h1>
 </div>
-<br>   
 """
 
 html_temp6 = """
-<div style = background-color:black;padding:5px>
-<h1 style="color:white;text-align:Center">Private Funded Scholarships</h1>
+<div style="background-color:#0d6efd; padding:10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h1 style="color:white;text-align:center;">Private Funded Scholarships</h1>
 </div>
-<br>   
 """
 
 html_temp7 = """
-<div style = background-color:black;padding:5px>
-<h1 style="color:white;text-align:Center">Specifically For Women</h1>
+<div style="background-color:#0d6efd; padding:10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h1 style="color:white;text-align:center;">Scholarships for Women</h1>
 </div>
-<br>   
 """
 
 html_temp8 = """
-<div style = background-color:black;padding:5px>
-<h1 style="color:white;text-align:Center">International Scholarships</h1>
+<div style="background-color:#0d6efd; padding:10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h1 style="color:white;text-align:center;">International Scholarships</h1>
 </div>
-<br>   
 """
 
 html_temp9 = """
 <br>
-<div style = background-color:white;padding:5px>
-<h3 style="color:black;text-align:Left;font-size:20px">Nelson Mandela rightly quoted:</h3>
+<div style="background-color:white;padding:15px;">
+    <h3 style="color:black;text-align:left;font-size:20px;">Nelson Mandela rightly quoted:</h3>
 </div>
-<div style = background-color:black;padding:5px>
-<h2 style="color:white;text-align:Center;font-size:22px">“ Education is the most powerful weapon we can use to change the world “.</h2>
+<div style="background-color:#0d6efd;padding:15px;border-radius: 5px;">
+    <h2 style="color:white;text-align:center;font-size:22px;">“Education is the most powerful weapon we can use to change the world.”</h2>
 </div>
 <br>
 """
 
 html_temp10 = """
-<div style = background-color:white;padding:5px>
-<h4 style="color:black;text-align:Center;font-size:20px">But in this fast-growing world, Education has become costly. And thus we come up with an idea of “ Scholarship Finder “ where a needy can find a scholarship. By this, one can definitely fulfill the dreams of educating themselves at a low cost.</h4>
+<div style="background-color:white;padding:15px;">
+    <h4 style="color:black;text-align:center;font-size:20px;">But in this fast-growing world, education has become costly. Thus, we bring you the “Scholarship Finder”, where those in need can find scholarships to fulfill their dreams of affordable education.</h4>
 </div>
-<br>  
+<br>
 """
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # MAIN CODE
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if selected == "Home":
-    st.markdown(html_temp,unsafe_allow_html=True)
-    # st.title("Scholarship Finder")
-    # st.dataframe(data)
-    name = st.text_input("Enter your Name",placeholder="Name")
-    if len(name) >= 1:
-        st.markdown(html_temp2.format(name),unsafe_allow_html=True)
-        minority = st.radio("Are you in Minorities(SC/ST) category?" ,["Yes","No"],index=1)
-        disability = st.radio("Do you have any disablity?",["Yes","No"],index=1)
-        sports_person = st.radio("Do you play professional sports?",["Yes","No"],index=1)
-        armed_forces = st.radio("Are any of your realtive in Armed Forces??",["Yes","No"],index=1)
-        anual_income = st.number_input("Enter your family's annual income",max_value=1100000)
-        income_words = num2words(anual_income)
-        st.info(income_words)
-        if anual_income >= 1100000:
-            st.info("Annual Income should be less than 10 Lakh Rupees")
-        marks = st.slider("Enter your marks in last final examination",min_value=0,max_value=100,value=30,step=1)
-        gender = st.selectbox("Enter your gender:",["Male","Female"])
-        nationality = st.radio("Do you want to include International Scholarships",["Yes","No"])
-       
+    st.markdown(html_temp, unsafe_allow_html=True)
+    
+    # User input section
+    name = st.text_input("Enter your Name", placeholder="Name", label_visibility="collapsed")
+    if name:
+        st.markdown(html_temp2.format(name), unsafe_allow_html=True)
+        
+        # User filters
+        minority = st.radio("Are you in Minorities(SC/ST) category?", ["Yes", "No"], index=1)
+        disability = st.radio("Do you have any disability?", ["Yes", "No"], index=1)
+        sports_person = st.radio("Do you play professional sports?", ["Yes", "No"], index=1)
+        armed_forces = st.radio("Are any of your relatives in Armed Forces?", ["Yes", "No"], index=1)
+        annual_income = st.number_input("Enter your family's annual income (in INR)", max_value=1100000, step=1000)
+        income_words = num2words(annual_income)
+        st.info(f"Your annual income in words: {income_words}")
+        
+        if annual_income >= 1100000:
+            st.error("Annual Income should be less than 10 Lakh Rupees")
+        
+        marks = st.slider("Enter your marks in the last final examination", min_value=0, max_value=100, value=30, step=1)
+        gender = st.selectbox("Enter your gender:", ["Male", "Female"])
+        nationality = st.radio("Do you want to include International Scholarships?", ["Yes", "No"])
+        
+        # Data Filtering
         if gender == "Female":
             if nationality == "Yes":
-                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= anual_income ) & (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
             else:
-                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= anual_income ) & (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & (data["Country"] == "India") ]
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Country"] == "India")]
         else:
             if nationality == "Yes":
-                # st.write(nationality)
-                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= anual_income ) & (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & (data["Gender"] == "No")]
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Gender"] == "No")]
             else:
-                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= anual_income ) & (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & (data["Gender"] == "No") & (data["Country"] == "India")]
-        mask_new = mask[["Scholarship Name" , "Amount Provided","Link" ,"Funded By"]]
+                mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= annual_income) & 
+                                (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & 
+                                (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks) & 
+                                (data["Gender"] == "No") & (data["Country"] == "India")]
+        
+        mask_new = mask[["Scholarship Name", "Amount Provided", "Link", "Funded By"]]
         rows = mask_new.shape[0]
-        cols = mask_new.shape[1]
+        
         a = []
         for i in range(rows):
-            a.append(f"{ mask_new.iloc[i,0] } : {mask_new.iloc[i,1]} Rs")
-            a.append(f"{ mask_new.iloc[i,2] }")
+            a.append(f"{mask_new.iloc[i, 0]} : {mask_new.iloc[i, 1]} INR")
+            a.append(f"{mask_new.iloc[i, 2]}")
             a.append("-------------------------------------------")
-        if st.button("Submit"):   
+        
+        if st.button("Submit"):
             for i in range(len(a)):
-                if(i%3==0):
-                    st.markdown(html_temp3.format(a[i]),unsafe_allow_html=True)
+                if i % 3 == 0:
+                    st.markdown(html_temp3.format(a[i]), unsafe_allow_html=True)
                 else:
-                    st.markdown(html_temp4.format(a[i]),unsafe_allow_html=True)
+                    st.markdown(html_temp4.format(a[i]), unsafe_allow_html=True)
     else:
-        st.info("This can't be empty!")
+        st.info("Please enter your name!")
 
+# Government Funded Scholarships Section
 if selected == "Government Funded Scholarships":
-    st.markdown(html_temp5,unsafe_allow_html=True)
-    new = data["Funded By"] == "Government"
-    govt_funded = data[new]
-    govt_funded = govt_funded[["Scholarship Name" , "Amount Provided","Link"]]
+    st.markdown(html_temp5, unsafe_allow_html=True)
+    govt_funded = data[data["Funded By"] == "Government"]
+    govt_funded = govt_funded[["Scholarship Name", "Amount Provided", "Link"]]
     st.table(govt_funded)
 
+# Private Funded Scholarships Section
 if selected == "Private Funded Scholarships":
-    st.markdown(html_temp6,unsafe_allow_html=True)
-    new_2 = data["Funded By"] == "Private"
-    prvt_funded = data[new_2]
-    prvt_funded = prvt_funded[["Scholarship Name" , "Amount Provided","Link"]]
+    st.markdown(html_temp6, unsafe_allow_html=True)
+    prvt_funded = data[data["Funded By"] == "Private"]
+    prvt_funded = prvt_funded[["Scholarship Name", "Amount Provided", "Link"]]
     st.table(prvt_funded)
 
+# Scholarships for Women Section
 if selected == "Scholarship for Women":
-    st.markdown(html_temp7,unsafe_allow_html=True)
-    new_3 = data["Gender"] == "Yes"
-    women_funded = data[new_3]
-    women_funded = women_funded[["Scholarship Name" , "Amount Provided","Link"]]
+    st.markdown(html_temp7, unsafe_allow_html=True)
+    women_funded = data[data["Gender"] == "Yes"]
+    women_funded = women_funded[["Scholarship Name", "Amount Provided", "Link"]]
     st.table(women_funded)
 
+# International Scholarships Section
 if selected == "International Scholarships":
-    st.markdown(html_temp8,unsafe_allow_html=True)
-    new_4 = data["Country"] != "India"
-    international_funded = data[new_4]
-    international_funded = international_funded[["Scholarship Name" , "Amount Provided","Link"]]
+    st.markdown(html_temp8, unsafe_allow_html=True)
+    international_funded = data[data["Country"] != "India"]
+    international_funded = international_funded[["Scholarship Name", "Amount Provided", "Link"]]
     st.table(international_funded)
-
-    st.markdown(html_temp9,unsafe_allow_html=True)
-    st.markdown(html_temp10,unsafe_allow_html=True)
-    
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    st.markdown(html_temp9, unsafe_allow_html=True)
+    st.markdown(html_temp10, unsafe_allow_html=True)
