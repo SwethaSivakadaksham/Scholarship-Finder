@@ -11,6 +11,8 @@ from num2words import num2words
 
 data = pd.read_csv("Scholarshipsnew.csv")
 
+
+
 # st.sidebar.header("Navigation")
 # navigation = st.sidebar.radio("Navigation",["Home","About Us","List of Government Funded Scholarships","List of Private Funded Scholarships","Specially for Women Scholarships"], label_visibility="hidden")
 
@@ -25,6 +27,9 @@ with st.sidebar:
     )
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 # styling of the website
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,6 +107,8 @@ html_temp10 = """
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
 # MAIN CODE
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -113,29 +120,18 @@ if selected == "Home":
     if len(name) >= 1:
         st.markdown(html_temp2.format(name),unsafe_allow_html=True)
         minority = st.radio("Are you in Minorities(SC/ST) category?" ,["Yes","No"],index=1)
-        disability = st.radio("Do you have any disability?",["Yes","No"],index=1)
+        disability = st.radio("Do you have any disablity?",["Yes","No"],index=1)
         sports_person = st.radio("Do you play professional sports?",["Yes","No"],index=1)
-        armed_forces = st.radio("Are any of your relatives in Armed Forces?",["Yes","No"],index=1)
-        
-        # Annual Income slider
-        anual_income = st.slider(
-            "Select your family's annual income (in Rupees):",
-            min_value=0,
-            max_value=1100000,
-            value=300000,
-            step=10000
-        )
-        
+        armed_forces = st.radio("Are any of your realtive in Armed Forces??",["Yes","No"],index=1)
+        anual_income = st.number_input("Enter your family's annual income",max_value=1100000)
         income_words = num2words(anual_income)
         st.info(income_words)
-        
         if anual_income >= 1100000:
             st.info("Annual Income should be less than 10 Lakh Rupees")
-        
         marks = st.slider("Enter your marks in last final examination",min_value=0,max_value=100,value=30,step=1)
         gender = st.selectbox("Enter your gender:",["Male","Female"])
         nationality = st.radio("Do you want to include International Scholarships",["Yes","No"])
-
+       
         if gender == "Female":
             if nationality == "Yes":
                 mask = data.loc[(data["Minorities"] == minority) & (data["Annual Income"] >= anual_income ) & (data["Disablities"] == disability) & (data["Armed Forces"] == armed_forces) & (data["Sports Person"] == sports_person) & (data["Grades in Prev Exam"] <= marks)]
