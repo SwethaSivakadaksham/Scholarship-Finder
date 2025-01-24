@@ -19,7 +19,7 @@ data = pd.read_csv("Scholarshipsnew.csv")
 with st.sidebar:
     selected = option_menu(
         menu_title="Navigation",
-        options=["Home","About Us","Government Funded Scholarships","Private Funded Scholarships","Scholarship for Women","International Scholarships"],
+        options=["Home","Government Funded Scholarships","Private Funded Scholarships","Scholarship for Women","International Scholarships"],
         icons=["house","compass","envelope","geo","gender-female","mortarboard-fill"],
         default_index=0,
         menu_icon="cast", 
@@ -214,27 +214,6 @@ if selected == "International Scholarships":
     international_funded = data[new_4]
     international_funded = international_funded[["Scholarship Name" , "Amount Provided","Link"]]
     st.table(international_funded)
-
-if selected == "About Us":
-    st.markdown(html_temp11,unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown(html_temp12,unsafe_allow_html=True)
-        st.image("aagam.jpg") 
-        st.write("https://www.linkedin.com/in/aagam-shah-65539b1bb/")
-        st.write("https://www.instagram.com/aagam_007/")
-   
-    with col2:
-        st.markdown(html_temp13,unsafe_allow_html=True)
-        st.image("akshat.jpeg")
-        st.write("https://www.linkedin.com/in/akshatshahh/")
-        st.write("https://www.instagram.com/thegajabfoodie/")
-   
-    with col3:
-        st.markdown(html_temp14,unsafe_allow_html=True)
-        st.image("ar.jpg")
-        st.write("https://www.linkedin.com/in/avinashraval/")
-        st.write("https://www.instagram.com/avinash.raval.29/")
 
     st.markdown(html_temp9,unsafe_allow_html=True)
     st.markdown(html_temp10,unsafe_allow_html=True)
