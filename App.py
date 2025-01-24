@@ -35,8 +35,8 @@ with st.sidebar:
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 html_temp = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">Scholarships Finder</h1>
+<div style = background-color:black;padding:5px>
+<h1 style="color:white;text-align:Center">Scholarships Finder</h1>
 </div>
 <br>   
 """
@@ -55,34 +55,34 @@ html_temp3 = """
 
 html_temp4 = """
 <div>
-<h5 style="color:blue;text-align:Left;font-size:16px">{}</h5>
+<h5 style="color:gray;text-align:Left;font-size:16px">{}</h5>
 </div>
 """
 
 html_temp5 = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">Government Funded Scholarships</h1>
+<div style = background-color:black;padding:5px>
+<h1 style="color:white;text-align:Center">Government Funded Scholarships</h1>
 </div>
 <br>   
 """
 
 html_temp6 = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">Private Funded Scholarships</h1>
+<div style = background-color:black;padding:5px>
+<h1 style="color:white;text-align:Center">Private Funded Scholarships</h1>
 </div>
 <br>   
 """
 
 html_temp7 = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">Specifically For Women</h1>
+<div style = background-color:black;padding:5px>
+<h1 style="color:white;text-align:Center">Specifically For Women</h1>
 </div>
 <br>   
 """
 
 html_temp8 = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">International Scholarships</h1>
+<div style = background-color:black;padding:5px>
+<h1 style="color:white;text-align:Center">International Scholarships</h1>
 </div>
 <br>   
 """
@@ -90,48 +90,21 @@ html_temp8 = """
 html_temp9 = """
 <br>
 <div style = background-color:white;padding:5px>
-<h3 style="color:black;text-align:Left;font-size:20px">Nelson Mandela rightly quoted:</h1>
+<h3 style="color:black;text-align:Left;font-size:20px">Nelson Mandela rightly quoted:</h3>
 </div>
-<div style = background-color:Aquamarine;padding:5px>
-<h2 style="color:black;text-align:Center;font-size:22px">“ Education is the most powerful weapon we can use to change the world “.</h1>
+<div style = background-color:black;padding:5px>
+<h2 style="color:white;text-align:Center;font-size:22px">“ Education is the most powerful weapon we can use to change the world “.</h2>
 </div>
 <br>
 """
 
 html_temp10 = """
-<div style = background-color:BlanchedAlmond;padding:5px>
-<h4 style="color:black;text-align:Center;font-size:20px">But in this fast growing world , Education has become costly. And thus we come up with an idea of “ Scholarship Finder “ where a needy can find a scholarship . By this one can definitely fulfil the dreams of educating themselves at a low cost.</h2>
+<div style = background-color:white;padding:5px>
+<h4 style="color:black;text-align:Center;font-size:20px">But in this fast-growing world, Education has become costly. And thus we come up with an idea of “ Scholarship Finder “ where a needy can find a scholarship. By this, one can definitely fulfill the dreams of educating themselves at a low cost.</h4>
 </div>
 <br>  
 """
 
-html_temp11 = """
-<div style = background-color:purple;padding:5px>
-<h1 style="color:yellow;text-align:Center">Think Tank</h1>
-</div>
-<br>   
-"""
-
-html_temp12=""" 
-    <div style=background-color:powderblue;>
-    <h3 style=color:#622569;text-align:center;font-size:22px>Aagam Shah</h3>
-    </div>
-    <br>
-     """
-
-html_temp13=""" 
-    <div style=background-color:powderblue;>
-    <h3 style=color:#622569;text-align:center;font-size:22px>Akshat Shah</h3>
-    </div>
-    <br>
-     """
-
-html_temp14=""" 
-    <div style=background-color:powderblue;>
-    <h3 style=color:#622569;text-align:center;font-size:22px>Avinash Raval</h3>
-    </div>
-    <br>
-     """
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
