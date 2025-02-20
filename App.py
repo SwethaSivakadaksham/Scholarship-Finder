@@ -7,7 +7,7 @@ conn = sqlite3.connect("scholarships.db", check_same_thread=False)
 cursor = conn.cursor()
 
 # Create tables if not exist
-cursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT, role TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS scholarships (id INTEGER PRIMARY KEY, name TEXT, amount INTEGER, criteria TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS student_details (id INTEGER PRIMARY KEY, username TEXT, annual_income INTEGER, marks INTEGER, category TEXT)''')
 conn.commit()
@@ -91,17 +91,29 @@ elif st.session_state["authenticated"] and st.session_state["user_role"] == "Adm
             conn.commit()
             st.success("Scholarship added successfully!")
 
-    # Display Scholarships
+    # Display Scholarships with Edit & Delete Options
     st.subheader("Existing Scholarships")
     scholarships = cursor.execute("SELECT * FROM scholarships").fetchall()
 
     for s in scholarships:
         with st.expander(f"{s[1]} - ₹{s[2]}"):
             st.write(f"**Criteria:** {s[3]}")
-            col1, col2 = st.columns(2)
-            if col1.button(f"🗑️ Delete {s[1]}", key=f"delete_{s[0]}"):
+            col1, col2, col3 = st.columns(3)
+
+            new_name = col1.text_input("Edit Name", value=s[1], key=f"name_{s[0]}")
+            new_amount = col2.number_input("Edit Amount", value=s[2], min_value=1000, step=1000, key=f"amount_{s[0]}")
+            new_criteria = col3.text_input("Edit Criteria", value=s[3], key=f"criteria_{s[0]}")
+
+            if st.button("Save Changes", key=f"edit_{s[0]}"):
+                cursor.execute("UPDATE scholarships SET name=?, amount=?, criteria=? WHERE id=?", (new_name, new_amount, new_criteria, s[0]))
+                conn.commit()
+                st.success("Scholarship updated!")
+                st.experimental_rerun()
+
+            if st.button("🗑️ Delete", key=f"delete_{s[0]}"):
                 cursor.execute("DELETE FROM scholarships WHERE id=?", (s[0],))
                 conn.commit()
+                st.warning("Scholarship deleted!")
                 st.experimental_rerun()
 
 # ----------------- STUDENT DETAILS PAGE -----------------
@@ -122,12 +134,10 @@ elif st.session_state["authenticated"] and st.session_state["user_role"] == "Stu
 elif st.session_state["authenticated"] and st.session_state["user_role"] == "Student" and st.session_state["student_registered"]:
     st.title("🎉 Your Eligible Scholarships")
 
-    # Get student details
     student = cursor.execute("SELECT * FROM student_details WHERE username=?", (st.session_state["username"],)).fetchone()
     if student:
         income, marks, category = student[2], student[3], student[4]
 
-        # Fetch matching scholarships
         eligible_scholarships = cursor.execute("SELECT * FROM scholarships WHERE criteria LIKE ?", (f"%{category}%",)).fetchall()
 
         if eligible_scholarships:
@@ -136,7 +146,7 @@ elif st.session_state["authenticated"] and st.session_state["user_role"] == "Stu
                     st.write(f"**Criteria:** {s[3]}")
         else:
             st.warning("No scholarships match your criteria.")
-    
+
     if st.button("🔄 Update Details"):
         st.session_state["student_registered"] = False
         st.experimental_rerun()
@@ -144,7 +154,9 @@ elif st.session_state["authenticated"] and st.session_state["user_role"] == "Stu
 # ----------------- LOGOUT BUTTON -----------------
 if st.session_state["authenticated"]:
     if st.button("🚪 Logout"):
-        st.session_state["authenticated"] = False
-        st.session_state["user_role"] = None
-        st.session_state["student_registered"] = False
-        st.experimental_rerun()
+        confirm = st.confirm("Are you sure you want to logout?")
+        if confirm:
+            st.session_state["authenticated"] = False
+            st.session_state["user_role"] = None
+            st.session_state["student_registered"] = False
+            st.experimental_rerun()
